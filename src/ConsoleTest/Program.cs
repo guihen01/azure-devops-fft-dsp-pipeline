@@ -3,14 +3,10 @@ using System;
 using System.Numerics;
 using FFTlib;
 using ScottPlot;
-
+using System.IO;
 
 namespace Test9
 {
-using System;
-using System.Numerics;
-using FFTlib;
-using ScottPlot;
 
 class Program
 {
@@ -21,6 +17,8 @@ class Program
         Console.WriteLine("====================================");
 
         int nbechant = 256;
+		
+		Directory.CreateDirectory("output");
 
         // =========================================================
         // SIGNAL 1 : PURE SINUSOID
@@ -65,7 +63,7 @@ class Program
 
         plt1.YLabel("Amplitude");
 
-        plt1.SavePng("fft-sinus.png", 1200, 600);
+        plt1.SavePng("output/fft-sinus.png", 1200, 600);
 
         Console.WriteLine("PNG generated: fft-sinus.png");
 
@@ -120,7 +118,7 @@ class Program
 
         plt2.YLabel("Amplitude");
 
-        plt2.SavePng("fft-gaussian.png", 1200, 600);
+        plt2.SavePng("output/fft-gaussian.png", 1200, 600);
 
         Console.WriteLine("PNG generated: fft-gaussian.png");
 

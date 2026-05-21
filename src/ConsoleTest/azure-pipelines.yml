@@ -1,0 +1,63 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+# =========================================================
+# Install .NET SDK
+# =========================================================
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.x'
+
+# =========================================================
+# Restore NuGet packages
+# =========================================================
+
+- script: |
+    dotnet restore src/ConsoleTest/ConsoleTest.csproj
+  displayName: 'Restore Packages'
+
+# =========================================================
+# Build application
+# =========================================================
+
+- script: |
+    dotnet build src/ConsoleTest/ConsoleTest.csproj --configuration Release
+  displayName: 'Build Application'
+
+# =========================================================
+# Run FFT DSP application
+# Generates PNG files
+# =========================================================
+
+- script: |
+    dotnet run --project src/ConsoleTest/ConsoleTest.csproj
+  displayName: 'Run FFT DSP Application'
+
+# =========================================================
+# Publish generated FFT PNG images
+# =========================================================
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'src/ConsoleTest/output'
+    ArtifactName: 'fft-images'
+
+# =========================================================
+# Publish application artifacts
+# =========================================================
+
+- script: |
+    dotnet publish src/ConsoleTest/ConsoleTest.csproj -c Release -o $(Build.ArtifactStagingDirectory)
+  displayName: 'Publish Application'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'fft-console-app'
