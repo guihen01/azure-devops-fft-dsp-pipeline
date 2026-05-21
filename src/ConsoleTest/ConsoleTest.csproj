@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FFTlib" Version="2.2.4" />
+    <PackageReference Include="ScottPlot" Version="5.1.58" />
+	
+    <Reference Include="PlotLib">
+         <HintPath>C:\temp\labs\Plot-Math-Lib\bin\Release\netstandard2.0\PlotLib.dll</HintPath>
+   </Reference>
+	
+  </ItemGroup>
+
+</Project>

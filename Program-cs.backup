@@ -1,0 +1,95 @@
+﻿
+using System;
+using System.Numerics;
+using FFTlib;
+using ScottPlot;
+
+
+namespace Test9
+{
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // ==========================================
+        // Parameters
+        // ==========================================
+
+        int nbechant = 256;
+
+        Console.WriteLine("Generating signal...");
+
+        // ==========================================
+        // Generate sinusoidal signal
+        // ==========================================
+
+        decimal[] signal = SiTest.GenSin2piF(
+            nbechant,
+            1,
+            50,
+            1000
+        );
+
+        Console.WriteLine("Signal generated.");
+
+        // ==========================================
+        // DFT / FFT
+        // ==========================================
+
+        Complex[] Ts = DFT.DFTv2(signal);
+
+        Console.WriteLine("DFT calculated.");
+
+        // ==========================================
+        // DSP / Power Spectral Density
+        // ==========================================
+
+        decimal[] Module1 = DSP.Dspdeci(Ts);
+
+        Console.WriteLine("DSP calculated.");
+
+        // ==========================================
+        // Convert decimal[] -> double[]
+        // ==========================================
+
+        double[] y = Array.ConvertAll(
+            Module1,
+            d => (double)d
+        );
+
+        // ==========================================
+        // X axis
+        // ==========================================
+
+        double[] x = new double[y.Length];
+
+        for (int i = 0; i < y.Length; i++)
+        {
+            x[i] = i;
+        }
+
+        // ==========================================
+        // Create graph with ScottPlot
+        // ==========================================
+
+        var plt = new ScottPlot.Plot();
+
+        plt.Add.Scatter(x, y);
+
+        plt.Title("FFT Power Spectral Density");
+
+        // ==========================================
+        // Save PNG
+        // ==========================================
+
+        string outputFile = "fft-spectrum.png";
+
+        plt.SavePng(outputFile, 1200, 600);
+
+        Console.WriteLine($"PNG generated: {outputFile}");
+    }
+}
+
+
+}
